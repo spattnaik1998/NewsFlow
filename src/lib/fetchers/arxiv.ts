@@ -42,7 +42,7 @@ export async function fetchArxiv(): Promise<{ articles: Article[]; stats: Source
         const authors = Array.isArray(entry.author) ? entry.author : [entry.author];
         const authorName = authors[0]?.name ?? "Unknown";
         const categories = Array.isArray(entry.category) ? entry.category : [entry.category];
-        const mainCat = categories[0]?.$.term ?? "cs.AI";
+        const mainCat = categories[0]?.$?.term ?? "cs.AI";
         const desc = truncate(entry.summary?.replace(/\s+/g, " ").trim() ?? "", 300);
         const category = inferCategoryByKeyword(entry.title, desc) ?? "research";
 
