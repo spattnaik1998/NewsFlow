@@ -5,8 +5,6 @@ export function deduplicateArticles(articles: Article[]): Article[] {
   const seen = new Map<string, Article>();
 
   for (const article of articles) {
-    const urlHash = computeContentHash(article.url, "");
-    const titleHash = computeContentHash("", article.title);
     const combinedHash = computeContentHash(article.url, article.title);
 
     // Check by combined hash first (exact match)

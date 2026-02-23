@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Search, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/lib/utils";
 

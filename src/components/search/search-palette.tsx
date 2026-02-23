@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X, Zap, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useSearch } from "@/hooks/use-search";
 import { SourceBadge } from "@/components/shared/source-badge";
 import { CategoryChip } from "@/components/shared/category-chip";
