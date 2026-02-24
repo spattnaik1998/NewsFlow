@@ -15,7 +15,9 @@ export async function GET() {
       status:
         stat.status === "error"
           ? "down"
-          : stat.latency > 5000
+          : stat.status === "cached"
+          ? "healthy"
+          : stat.latency > 15000
           ? "degraded"
           : "healthy",
       lastFetchAt: stat.cachedAt ?? feed.generatedAt,

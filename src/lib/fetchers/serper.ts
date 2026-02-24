@@ -6,6 +6,39 @@ import { inferCategoryByKeyword, generateId, truncate } from "../utils";
 const CACHE_KEY = "fetcher:serper";
 const SEARCH_CACHE_PREFIX = "search:serper:";
 
+/**
+ * Serper returns relative strings like "1 hour ago", "3 days ago", "1 week ago"
+ * as well as absolute strings like "Dec 29, 2025". new Date() cannot parse the
+ * relative form — this helper converts both to a valid ISO string.
+ */
+function parseSerperDate(raw: string | undefined): string {
+  if (!raw) return new Date().toISOString();
+
+  // Try direct parse first (handles "Dec 29, 2025", ISO strings, etc.)
+  const direct = new Date(raw);
+  if (!isNaN(direct.getTime())) return direct.toISOString();
+
+  // Parse relative strings: "X unit(s) ago"
+  const match = raw.match(/^(\d+)\s+(second|minute|hour|day|week|month|year)s?\s+ago$/i);
+  if (match) {
+    const n = parseInt(match[1]);
+    const unit = match[2].toLowerCase();
+    const ms: Record<string, number> = {
+      second: 1_000,
+      minute: 60_000,
+      hour: 3_600_000,
+      day: 86_400_000,
+      week: 604_800_000,
+      month: 2_592_000_000,
+      year: 31_536_000_000,
+    };
+    return new Date(Date.now() - n * (ms[unit] ?? 0)).toISOString();
+  }
+
+  // Fallback to now
+  return new Date().toISOString();
+}
+
 export async function fetchSerper(): Promise<{ articles: Article[]; stats: SourceStats }> {
   const start = Date.now();
   const cached = cache.get<Article[]>(CACHE_KEY);
@@ -27,8 +60,6 @@ export async function fetchSerper(): Promise<{ articles: Article[]; stats: Sourc
 
   try {
     const articles: Article[] = [];
-
-    // Only fetch from the first 3 queries to limit API calls
     const queries = SERPER_QUERIES.slice(0, 3);
 
     await Promise.allSettled(
@@ -56,7 +87,7 @@ export async function fetchSerper(): Promise<{ articles: Article[]; stats: Sourc
             description: desc,
             source: "serper" as const,
             sourceName: item.source ?? "Google News",
-            publishedAt: item.date ? new Date(item.date).toISOString() : new Date().toISOString(),
+            publishedAt: parseSerperDate(item.date),
             category,
             imageUrl: item.imageUrl,
           });
@@ -119,7 +150,7 @@ export async function searchSerper(query: string): Promise<Article[]> {
           description: desc,
           source: "serper" as const,
           sourceName: item.source ?? "Google News",
-          publishedAt: item.date ? new Date(item.date).toISOString() : new Date().toISOString(),
+          publishedAt: parseSerperDate(item.date),
           category: inferCategoryByKeyword(item.title, desc) ?? "uncategorized",
           imageUrl: item.imageUrl,
         };
