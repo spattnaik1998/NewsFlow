@@ -20,7 +20,9 @@ export type Source =
   | "rss"
   | "press"
   | "serper"
-  | "tavily";
+  | "tavily"
+  | "newsletter"
+  | "youtube";
 
 export type Sentiment = "positive" | "negative" | "neutral";
 
@@ -90,6 +92,22 @@ export interface SourceHealth {
   articleCount: number;
   avgLatencyMs: number;
   errors: string[];
+}
+
+export interface DailyBriefing {
+  headline: string;
+  lede: string;
+  sections: { theme: string; narrative: string; articleIds: string[] }[];
+  watchFor: string;
+  generatedAt: string;
+}
+
+export interface ArticleInsight {
+  soWhat: string;
+  firstPrinciple: string;
+  learnMore: string[];
+  thinkAbout: string;
+  generatedAt: string;
 }
 
 export interface FeedFilters {

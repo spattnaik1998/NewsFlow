@@ -24,6 +24,8 @@ export const SOURCE_LABELS: Record<Source, string> = {
   "press": "Press",
   "serper": "Google News",
   "tavily": "Deep Search",
+  "newsletter": "Newsletter",
+  "youtube": "YouTube",
 };
 
 export const TTL = {
@@ -38,6 +40,10 @@ export const TTL = {
   SERPER: 10 * 60 * 1000,
   TAVILY: 20 * 60 * 1000,
   AI_SUMMARY: 60 * 60 * 1000,
+  NEWSLETTER: 30 * 60 * 1000,
+  YOUTUBE: 60 * 60 * 1000,
+  AI_BRIEFING: 60 * 60 * 1000,
+  AI_INSIGHT: 2 * 60 * 60 * 1000,
 } as const;
 
 export const RSS_FEEDS = [
@@ -51,6 +57,21 @@ export const PRESS_FEEDS = [
   { name: "New York Times", url: "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" },
   { name: "Washington Post", url: "https://feeds.washingtonpost.com/rss/business/technology" },
   { name: "Wall Street Journal", url: "https://feeds.content.dowjones.io/public/rss/RSSWSJD" },
+];
+
+export const NEWSLETTER_FEEDS = [
+  { name: "The Pragmatic Engineer", url: "https://newsletter.pragmaticengineer.com/feed" },
+  { name: "ByteByteGo", url: "https://blog.bytebytego.com/feed" },
+  { name: "The Batch", url: "https://www.deeplearning.ai/the-batch/rss.xml" },
+  { name: "Simon Willison", url: "https://simonwillison.net/atom/everything/" },
+  { name: "Exponential View", url: "https://www.exponentialview.co/feed" },
+];
+
+export const YOUTUBE_CHANNELS = [
+  { name: "Fireship", id: "UCsBjURrPoezykLs9EqgamOA" },
+  { name: "Lex Fridman", id: "UCSHZKyawb77ixDdsGog4iWA" },
+  { name: "Andrej Karpathy", id: "UCBcRF18a7Qf58cCRy5xuWwQ" },
+  { name: "ThePrimeTime", id: "UC4mW6v8NdaOAQMjDiRSgdMA" },
 ];
 
 export const REDDIT_SUBREDDITS = [

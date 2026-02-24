@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ExternalLink, MessageSquare, TrendingUp } from "lucide-react";
+import { ExternalLink, MessageSquare, TrendingUp, Bookmark, BookmarkCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Article } from "@/lib/types";
 import { SourceBadge } from "@/components/shared/source-badge";
@@ -12,9 +12,11 @@ interface ArticleCardProps {
   article: Article;
   className?: string;
   variant?: "default" | "compact";
+  isSaved?: boolean;
+  onSave?: (article: Article) => void;
 }
 
-export function ArticleCard({ article, className, variant = "default" }: ArticleCardProps) {
+export function ArticleCard({ article, className, variant = "default", isSaved, onSave }: ArticleCardProps) {
   const isCompact = variant === "compact";
 
   return (
@@ -75,6 +77,18 @@ export function ArticleCard({ article, className, variant = "default" }: Article
               <MessageSquare className="h-3 w-3" />
               {article.commentCount}
             </span>
+          )}
+          {onSave && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onSave(article); }}
+              className={cn(
+                "p-0.5 rounded transition-colors hover:bg-muted",
+                isSaved ? "text-amber-500 hover:text-amber-600" : "hover:text-foreground"
+              )}
+              title={isSaved ? "Remove from reading list" : "Save to reading list"}
+            >
+              {isSaved ? <BookmarkCheck className="h-3 w-3" /> : <Bookmark className="h-3 w-3" />}
+            </button>
           )}
           <a
             href={article.url}

@@ -7,7 +7,9 @@ import { ArticleGrid } from "@/components/feed/article-grid";
 import { FeedToolbar } from "@/components/feed/feed-toolbar";
 import { FeedSkeleton } from "@/components/feed/feed-skeleton";
 import { SearchPalette } from "@/components/search/search-palette";
+import { SpeedReadModal } from "@/components/feed/speed-read-modal";
 import { useFeed } from "@/hooks/use-feed";
+import { useReadingList } from "@/hooks/use-reading-list";
 import type { FeedFilters } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
@@ -16,6 +18,8 @@ export default function HomePage() {
   const [filters, setFilters] = useState<FeedFilters>({ sortBy: "score" });
   const [page, setPage] = useState(1);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [blitzOpen, setBlitzOpen] = useState(false);
+  const { savedIds, toggle: toggleSave } = useReadingList();
 
   const { articles, totalCount, sourceStats, isLoading, hasMore, refresh } = useFeed({
     ...filters,
@@ -42,13 +46,14 @@ export default function HomePage() {
               isLoading={isLoading}
               onFiltersChange={updateFilters}
               onRefresh={refresh}
+              onBlitz={() => setBlitzOpen(true)}
             />
 
             {isLoading && articles.length === 0 ? (
               <FeedSkeleton count={9} />
             ) : (
               <>
-                <ArticleGrid articles={articles} />
+                <ArticleGrid articles={articles} savedIds={savedIds} onSave={toggleSave} />
 
                 {hasMore && (
                   <div className="flex justify-center mt-8">
@@ -72,6 +77,15 @@ export default function HomePage() {
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
       />
+
+      {blitzOpen && (
+        <SpeedReadModal
+          articles={articles}
+          savedIds={savedIds}
+          onSave={toggleSave}
+          onClose={() => setBlitzOpen(false)}
+        />
+      )}
     </>
   );
 }

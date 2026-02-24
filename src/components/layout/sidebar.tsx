@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Activity } from "lucide-react";
+import { LayoutDashboard, Activity, Bookmark, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CATEGORIES, SOURCE_LABELS } from "@/lib/constants";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,7 +19,7 @@ const ORDERED_CATEGORIES = Object.entries(CATEGORIES).filter(
 ) as [Category, (typeof CATEGORIES)[Category]][];
 
 const SOURCE_ORDER: Source[] = [
-  "hacker-news", "reddit", "rss", "press", "devto", "github", "arxiv", "serper", "tavily"
+  "hacker-news", "reddit", "rss", "press", "newsletter", "youtube", "devto", "github", "arxiv", "serper", "tavily"
 ];
 
 export function Sidebar({ sourceStats, className }: SidebarProps) {
@@ -37,7 +37,7 @@ export function Sidebar({ sourceStats, className }: SidebarProps) {
       <ScrollArea className="flex-1">
         <nav className="p-3 space-y-4">
           {/* Main nav */}
-          <div>
+          <div className="space-y-0.5">
             <Link
               href="/"
               className={cn(
@@ -49,6 +49,30 @@ export function Sidebar({ sourceStats, className }: SidebarProps) {
             >
               <LayoutDashboard className="h-4 w-4" />
               All Articles
+            </Link>
+            <Link
+              href="/briefing"
+              className={cn(
+                "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                pathname === "/briefing"
+                  ? "bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <Newspaper className="h-4 w-4" />
+              Daily Brief
+            </Link>
+            <Link
+              href="/reading-list"
+              className={cn(
+                "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                pathname === "/reading-list"
+                  ? "bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <Bookmark className="h-4 w-4" />
+              Reading List
             </Link>
           </div>
 

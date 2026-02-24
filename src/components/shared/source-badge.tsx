@@ -47,6 +47,16 @@ const SOURCE_STYLES: Record<Source, { bg: string; dot: string; label?: string }>
     dot: "bg-indigo-500",
     label: "Deep",
   },
+  newsletter: {
+    bg: "bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20",
+    dot: "bg-teal-500",
+    label: "NL",
+  },
+  youtube: {
+    bg: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
+    dot: "bg-rose-500",
+    label: "YT",
+  },
 };
 
 interface SourceBadgeProps {

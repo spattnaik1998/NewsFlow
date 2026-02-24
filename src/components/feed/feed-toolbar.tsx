@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutGrid, Clock, TrendingUp, RefreshCw } from "lucide-react";
+import { LayoutGrid, Clock, TrendingUp, RefreshCw, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { FeedFilters } from "@/lib/types";
@@ -11,6 +11,7 @@ interface FeedToolbarProps {
   isLoading?: boolean;
   onFiltersChange: (f: Partial<FeedFilters>) => void;
   onRefresh?: () => void;
+  onBlitz?: () => void;
 }
 
 export function FeedToolbar({
@@ -19,6 +20,7 @@ export function FeedToolbar({
   isLoading,
   onFiltersChange,
   onRefresh,
+  onBlitz,
 }: FeedToolbarProps) {
   return (
     <div className="flex items-center justify-between gap-3 py-2 mb-4">
@@ -58,6 +60,18 @@ export function FeedToolbar({
             New
           </button>
         </div>
+
+        {onBlitz && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5 h-8 border-amber-500/40 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10 hover:border-amber-500/60"
+            onClick={onBlitz}
+          >
+            <Zap className="h-3.5 w-3.5" />
+            Blitz
+          </Button>
+        )}
 
         {onRefresh && (
           <Button

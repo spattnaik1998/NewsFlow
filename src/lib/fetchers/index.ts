@@ -11,6 +11,8 @@ import { fetchRSSFeeds } from "./rss-feeds";
 import { fetchPress } from "./press";
 import { fetchSerper } from "./serper";
 import { fetchTavily } from "./tavily";
+import { fetchNewsletters } from "./newsletter";
+import { fetchYouTube } from "./youtube";
 
 export interface AggregatedFeed {
   articles: Article[];
@@ -40,6 +42,8 @@ export async function fetchAllSources(): Promise<AggregatedFeed> {
     fetchPress(),
     fetchSerper(),
     fetchTavily(),
+    fetchNewsletters(),
+    fetchYouTube(),
   ]);
 
   const allArticles: Article[] = [];

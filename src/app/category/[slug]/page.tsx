@@ -8,6 +8,7 @@ import { FeedToolbar } from "@/components/feed/feed-toolbar";
 import { FeedSkeleton } from "@/components/feed/feed-skeleton";
 import { SearchPalette } from "@/components/search/search-palette";
 import { useFeed } from "@/hooks/use-feed";
+import { useReadingList } from "@/hooks/use-reading-list";
 import { CATEGORIES } from "@/lib/constants";
 import type { Category, FeedFilters } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   const [filters, setFilters] = useState<FeedFilters>({ sortBy: "score" });
   const [page, setPage] = useState(1);
   const [searchOpen, setSearchOpen] = useState(false);
+  const { savedIds, toggle: toggleSave } = useReadingList();
 
   const { articles, totalCount, sourceStats, isLoading, hasMore, refresh } = useFeed({
     ...filters,
@@ -99,7 +101,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
               </div>
             ) : (
               <>
-                <ArticleGrid articles={articles} />
+                <ArticleGrid articles={articles} savedIds={savedIds} onSave={toggleSave} />
                 {hasMore && (
                   <div className="flex justify-center mt-8">
                     <Button

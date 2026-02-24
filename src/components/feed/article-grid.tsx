@@ -5,9 +5,11 @@ import { ArticleCard } from "./article-card";
 interface ArticleGridProps {
   articles: Article[];
   className?: string;
+  savedIds?: Set<string>;
+  onSave?: (article: Article) => void;
 }
 
-export function ArticleGrid({ articles, className }: ArticleGridProps) {
+export function ArticleGrid({ articles, className, savedIds, onSave }: ArticleGridProps) {
   if (articles.length === 0) return null;
 
   return (
@@ -19,7 +21,12 @@ export function ArticleGrid({ articles, className }: ArticleGridProps) {
       )}
     >
       {articles.map((article) => (
-        <ArticleCard key={article.id} article={article} />
+        <ArticleCard
+          key={article.id}
+          article={article}
+          isSaved={savedIds?.has(article.id)}
+          onSave={onSave}
+        />
       ))}
     </div>
   );

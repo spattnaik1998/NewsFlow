@@ -57,6 +57,8 @@ export function scoreArticle(article: Article): number {
     "press": 100,
     "serper": 100,
     "tavily": 100,
+    "newsletter": 100,
+    "youtube": 100,
   };
 
   const max = sourceMax[article.source] ?? 1000;
@@ -67,8 +69,10 @@ export function scoreArticle(article: Article): number {
   const sourceBonus: Record<string, number> = {
     "hacker-news": 20,
     "arxiv": 18,
+    "newsletter": 16,
     "tavily": 16,
     "press": 15,
+    "youtube": 14,
     "rss": 12,
     "reddit": 12,
     "serper": 10,
