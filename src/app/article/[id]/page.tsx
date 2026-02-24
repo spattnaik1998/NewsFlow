@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import { useArticle } from "@/hooks/use-article";
 import { ArticleHero } from "@/components/article/article-hero";
 import { AISummaryPanel } from "@/components/article/ai-summary-panel";
@@ -11,8 +10,8 @@ import { useState } from "react";
 import { SearchPalette } from "@/components/search/search-palette";
 import { AlertCircle } from "lucide-react";
 
-export default function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function ArticlePage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const { article, relatedArticles, isLoading, isError } = useArticle(id);
   const [searchOpen, setSearchOpen] = useState(false);
 

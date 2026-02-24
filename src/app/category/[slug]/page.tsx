@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import { ArticleGrid } from "@/components/feed/article-grid";
@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-export default function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
+export default function CategoryPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
   const category = slug as Category;
   const meta = CATEGORIES[category];
 
