@@ -8,6 +8,7 @@ import { fetchArxiv } from "./arxiv";
 import { fetchDevTo } from "./devto";
 import { fetchGitHubTrending } from "./github-trending";
 import { fetchRSSFeeds } from "./rss-feeds";
+import { fetchPress } from "./press";
 import { fetchSerper } from "./serper";
 import { fetchTavily } from "./tavily";
 
@@ -36,6 +37,7 @@ export async function fetchAllSources(): Promise<AggregatedFeed> {
     fetchDevTo(),
     fetchGitHubTrending(),
     fetchRSSFeeds(),
+    fetchPress(),
     fetchSerper(),
     fetchTavily(),
   ]);

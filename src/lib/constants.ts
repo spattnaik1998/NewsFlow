@@ -21,6 +21,7 @@ export const SOURCE_LABELS: Record<Source, string> = {
   "devto": "Dev.to",
   "github": "GitHub",
   "rss": "RSS",
+  "press": "Press",
   "serper": "Google News",
   "tavily": "Deep Search",
 };
@@ -33,6 +34,7 @@ export const TTL = {
   DEVTO: 10 * 60 * 1000,
   GITHUB: 15 * 60 * 1000,
   RSS: 5 * 60 * 1000,
+  PRESS: 15 * 60 * 1000,
   SERPER: 10 * 60 * 1000,
   TAVILY: 20 * 60 * 1000,
   AI_SUMMARY: 60 * 60 * 1000,
@@ -43,6 +45,12 @@ export const RSS_FEEDS = [
   { name: "Ars Technica", url: "https://feeds.arstechnica.com/arstechnica/index" },
   { name: "The Verge", url: "https://www.theverge.com/rss/index.xml" },
   { name: "Wired", url: "https://www.wired.com/feed/rss" },
+];
+
+export const PRESS_FEEDS = [
+  { name: "New York Times", url: "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" },
+  { name: "Washington Post", url: "https://feeds.washingtonpost.com/rss/business/technology" },
+  { name: "Wall Street Journal", url: "https://feeds.content.dowjones.io/public/rss/RSSWSJD" },
 ];
 
 export const REDDIT_SUBREDDITS = [

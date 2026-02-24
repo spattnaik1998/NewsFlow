@@ -54,6 +54,7 @@ export function scoreArticle(article: Article): number {
     "devto": 2000,
     "github": 500000,
     "rss": 100,
+    "press": 100,
     "serper": 100,
     "tavily": 100,
   };
@@ -67,6 +68,7 @@ export function scoreArticle(article: Article): number {
     "hacker-news": 20,
     "arxiv": 18,
     "tavily": 16,
+    "press": 15,
     "rss": 12,
     "reddit": 12,
     "serper": 10,

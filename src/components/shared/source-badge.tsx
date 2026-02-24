@@ -32,6 +32,11 @@ const SOURCE_STYLES: Record<Source, { bg: string; dot: string; label?: string }>
     dot: "bg-violet-500",
     label: "RSS",
   },
+  press: {
+    bg: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+    dot: "bg-amber-500",
+    label: "Press",
+  },
   serper: {
     bg: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20",
     dot: "bg-sky-500",

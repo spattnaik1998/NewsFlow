@@ -18,6 +18,7 @@ export type Source =
   | "devto"
   | "github"
   | "rss"
+  | "press"
   | "serper"
   | "tavily";
 
