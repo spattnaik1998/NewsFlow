@@ -19,7 +19,7 @@ const ORDERED_CATEGORIES = Object.entries(CATEGORIES).filter(
 ) as [Category, (typeof CATEGORIES)[Category]][];
 
 const SOURCE_ORDER: Source[] = [
-  "hacker-news", "reddit", "rss", "devto", "github", "arxiv", "serper", "tavily"
+  "hacker-news", "reddit", "rss", "press", "devto", "github", "arxiv", "serper", "tavily"
 ];
 
 export function Sidebar({ sourceStats, className }: SidebarProps) {
