@@ -59,10 +59,15 @@ Use 3-5 sections. Only include articleIds that appear in the provided list. Do n
   const raw = completion.choices[0]?.message?.content ?? "{}";
   const parsed = JSON.parse(raw);
 
+  const rawSections = Array.isArray(parsed.sections) ? parsed.sections : [];
   const briefing: DailyBriefing = {
     headline: parsed.headline ?? "Today in Tech",
     lede: parsed.lede ?? "",
-    sections: Array.isArray(parsed.sections) ? parsed.sections : [],
+    sections: rawSections.map((s: { theme?: string; narrative?: string; articleIds?: unknown }) => ({
+      theme: typeof s.theme === "string" ? s.theme : "",
+      narrative: typeof s.narrative === "string" ? s.narrative : "",
+      articleIds: Array.isArray(s.articleIds) ? s.articleIds.filter((id): id is string => typeof id === "string") : [],
+    })),
     watchFor: parsed.watchFor ?? "",
     generatedAt: new Date().toISOString(),
   };

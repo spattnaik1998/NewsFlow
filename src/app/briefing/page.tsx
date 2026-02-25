@@ -15,7 +15,11 @@ interface BriefingWithArticles extends DailyBriefing {
   _articles?: Article[];
 }
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+const fetcher = (url: string) =>
+  fetch(url).then((r) => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  });
 
 export default function BriefingPage() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -103,8 +107,8 @@ export default function BriefingPage() {
                 </div>
 
                 {/* Sections */}
-                {data.sections.map((section, i) => {
-                  const sectionArticles = section.articleIds
+                {(data.sections ?? []).map((section, i) => {
+                  const sectionArticles = (section.articleIds ?? [])
                     .map((id) => articleMap.get(id))
                     .filter((a): a is Article => Boolean(a))
                     .slice(0, 3);

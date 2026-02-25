@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Zap } from "lucide-react";
+import { Search, Zap, Newspaper } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
 interface HeaderProps {
   onSearchOpen?: () => void;
@@ -11,6 +12,7 @@ interface HeaderProps {
 }
 
 export function Header({ onSearchOpen, className }: HeaderProps) {
+  const pathname = usePathname();
   return (
     <header
       className={cn(
@@ -27,6 +29,20 @@ export function Header({ onSearchOpen, className }: HeaderProps) {
           <span className="font-bold text-[15px] tracking-tight">
             News<span className="text-amber-500">Flow</span>
           </span>
+        </Link>
+
+        {/* Daily Brief nav link — visible on all screen sizes */}
+        <Link
+          href="/briefing"
+          className={cn(
+            "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors whitespace-nowrap",
+            pathname === "/briefing"
+              ? "bg-amber-500/10 text-amber-700 dark:text-amber-400"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+          )}
+        >
+          <Newspaper className="h-3.5 w-3.5 flex-shrink-0" />
+          <span className="hidden sm:inline">Daily Brief</span>
         </Link>
 
         <div className="flex-1" />
