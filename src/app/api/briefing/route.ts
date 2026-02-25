@@ -23,8 +23,9 @@ export async function GET(request: NextRequest) {
     const briefing = await generateBriefing(feed.articles);
     return NextResponse.json(briefing);
   } catch (error) {
-    console.error("[/api/briefing]", error);
-    return NextResponse.json({ error: "Failed to generate briefing" }, { status: 500 });
+    const message = error instanceof Error ? error.message : "Failed to generate briefing";
+    console.error("[/api/briefing]", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 

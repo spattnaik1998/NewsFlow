@@ -48,6 +48,10 @@ Respond with this exact JSON structure:
 
 Use 3-5 sections. Only include articleIds that appear in the provided list. Do not hallucinate IDs.`;
 
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY is not configured. Add it to your Vercel environment variables and redeploy.");
+  }
+
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     messages: [{ role: "user", content: prompt }],
@@ -57,7 +61,14 @@ Use 3-5 sections. Only include articleIds that appear in the provided list. Do n
   });
 
   const raw = completion.choices[0]?.message?.content ?? "{}";
-  const parsed = JSON.parse(raw);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let parsed: Record<string, any>;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    throw new Error("OpenAI returned malformed JSON — try regenerating.");
+  }
 
   const rawSections = Array.isArray(parsed.sections) ? parsed.sections : [];
   const briefing: DailyBriefing = {

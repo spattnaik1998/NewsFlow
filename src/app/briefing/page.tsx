@@ -16,8 +16,11 @@ interface BriefingWithArticles extends DailyBriefing {
 }
 
 const fetcher = (url: string) =>
-  fetch(url).then((r) => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  fetch(url).then(async (r) => {
+    if (!r.ok) {
+      const body = await r.json().catch(() => ({}));
+      throw new Error(body.error ?? `HTTP ${r.status}`);
+    }
     return r.json();
   });
 
@@ -92,7 +95,10 @@ export default function BriefingPage() {
             {error && !isLoading && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <AlertTriangle className="h-8 w-8 text-destructive mb-4" />
-                <p className="text-sm text-muted-foreground mb-4">Failed to generate briefing.</p>
+                <p className="text-sm font-medium mb-1">Failed to generate briefing</p>
+                <p className="text-xs text-muted-foreground mb-4 max-w-sm">
+                  {error?.message ?? "An unexpected error occurred."}
+                </p>
                 <Button size="sm" onClick={() => mutate()}>Try again</Button>
               </div>
             )}
