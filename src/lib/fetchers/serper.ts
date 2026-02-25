@@ -70,7 +70,7 @@ export async function fetchSerper(): Promise<{ articles: Article[]; stats: Sourc
             "X-API-KEY": apiKey,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ q: query, num: 10 }),
+          body: JSON.stringify({ q: query, num: 10, tbs: "qdr:d" }),
         });
 
         if (!res.ok) return;

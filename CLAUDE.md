@@ -26,7 +26,9 @@ TAVILY_API_KEY=...    # deep research search (on-demand only)
 
 ### Data Flow
 
-All data originates in `src/lib/fetchers/` — one file per source. `fetchAllSources()` in `src/lib/fetchers/index.ts` runs all 8 fetchers concurrently via `Promise.allSettled`, scores each article with `scoreArticle()`, deduplicates with `deduplicateArticles()`, and caches the result for 5 minutes. The `/api/feed` route calls `fetchAllSources()` and applies filtering, sorting, and pagination on top.
+All data originates in `src/lib/fetchers/` — one file per source. `fetchAllSources()` in `src/lib/fetchers/index.ts` runs all background fetchers concurrently via `Promise.allSettled`, scores each article with `scoreArticle()`, deduplicates with `deduplicateArticles()`, and caches the result for 5 minutes. The `/api/feed` route calls `fetchAllSources()` and applies filtering, sorting, and pagination on top.
+
+Current background fetchers: `hacker-news`, `github-trending`, `reddit`, `arxiv`, `devto`, `rss-feeds`, `newsletter`, `press`, `youtube`. `serper.ts` and `tavily.ts` are search-only and not aggregated into the feed.
 
 ### Caching
 
@@ -42,13 +44,22 @@ All data originates in `src/lib/fetchers/` — one file per source. `fetchAllSou
 
 `src/lib/ai/categorizer.ts` runs a keyword scan first (defined in `KEYWORD_CATEGORIES` in constants.ts), covering ~75% of articles for free. Only uncategorized articles are sent to `gpt-4o-mini` in batches of 20. `src/lib/ai/summarizer.ts` generates per-article summaries lazily (only when requested via `/api/summarize`) and caches them for 1 hour. Only `title + description` (max 300 chars) is sent — never full article content.
 
+Additional AI modules: `src/lib/ai/briefing.ts` (daily digest generation via `/api/briefing`) and `src/lib/ai/insight.ts` (per-article intelligence layer via `/api/insight`).
+
 ### Rate Limiting
 
 `src/lib/rate-limit.ts` provides sliding-window rate limiting keyed by IP. Limits are: feed 60/min, search 20/min, summarize 10/min, categorize 5/min.
 
-### Client State
+### Client State & Routing
 
-`src/app/page.tsx` is a client component that owns all filter state. It uses SWR via `src/hooks/use-feed.ts`. Article detail (`src/app/article/[id]/page.tsx`) and category pages (`src/app/category/[slug]/page.tsx`) are separate routes.
+`src/app/page.tsx` is a client component that owns all filter state, using SWR via `src/hooks/use-feed.ts`. Other hooks: `use-article.ts` (article detail fetching), `use-search.ts` (Cmd+K search), `use-reading-list.ts` (localStorage-backed Set of article IDs).
+
+App routes beyond the main feed:
+- `/article/[id]` — article detail with lazy AI summarization
+- `/category/[slug]` — filtered category view
+- `/briefing` — daily AI-generated digest
+- `/reading-list` — saved articles (client-side localStorage)
+- `/sources` — source health dashboard
 
 ### Key Types
 
@@ -62,6 +73,6 @@ All shared TypeScript interfaces are in `src/lib/types.ts`: `Article`, `AISummar
 
 1. Create `src/lib/fetchers/your-source.ts` — must return `{ articles: Article[], stats: SourceStats }`
 2. Add the source string literal to the `Source` type in `src/lib/types.ts`
-3. Add a label to `SOURCE_LABELS` in `src/lib/constants.ts`
+3. Add a label to `SOURCE_LABELS` and an entry to `SOURCE_ORDER` in `src/lib/constants.ts`
 4. Add a `sourceMax` entry in `scoreArticle()` in `src/lib/deduplication.ts`
 5. Import and add to `Promise.allSettled([...])` in `src/lib/fetchers/index.ts`

@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 
 export default function HomePage() {
-  const [filters, setFilters] = useState<FeedFilters>({ sortBy: "score" });
+  const [filters, setFilters] = useState<FeedFilters>({ sortBy: "date" });
   const [page, setPage] = useState(1);
   const [searchOpen, setSearchOpen] = useState(false);
   const [blitzOpen, setBlitzOpen] = useState(false);

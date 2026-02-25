@@ -29,21 +29,21 @@ export const SOURCE_LABELS: Record<Source, string> = {
 };
 
 export const TTL = {
-  FULL_FEED: 5 * 60 * 1000,
-  HACKER_NEWS: 3 * 60 * 1000,
-  REDDIT: 5 * 60 * 1000,
-  ARXIV: 30 * 60 * 1000,
-  DEVTO: 10 * 60 * 1000,
-  GITHUB: 15 * 60 * 1000,
-  RSS: 5 * 60 * 1000,
-  PRESS: 15 * 60 * 1000,
-  SERPER: 10 * 60 * 1000,
-  TAVILY: 20 * 60 * 1000,
-  AI_SUMMARY: 60 * 60 * 1000,
-  NEWSLETTER: 30 * 60 * 1000,
-  YOUTUBE: 60 * 60 * 1000,
-  AI_BRIEFING: 60 * 60 * 1000,
-  AI_INSIGHT: 2 * 60 * 60 * 1000,
+  FULL_FEED: 2 * 60 * 1000,       // 2 min  — master cache, drives client refresh cadence
+  HACKER_NEWS: 2 * 60 * 1000,    // 2 min  — front page turns over fast
+  REDDIT: 3 * 60 * 1000,         // 3 min  — hot posts update frequently
+  ARXIV: 20 * 60 * 1000,         // 20 min — paper submissions are slow
+  DEVTO: 5 * 60 * 1000,          // 5 min
+  GITHUB: 10 * 60 * 1000,        // 10 min — trending repos don't change by the minute
+  RSS: 3 * 60 * 1000,            // 3 min  — RSS is the fastest breaking-news signal
+  PRESS: 5 * 60 * 1000,          // 5 min  — NYT/WaPo/WSJ publish throughout the day
+  SERPER: 5 * 60 * 1000,         // 5 min
+  TAVILY: 20 * 60 * 1000,        // 20 min — on-demand search only
+  AI_SUMMARY: 60 * 60 * 1000,    // 1 hr   — summaries don't need recomputing
+  NEWSLETTER: 15 * 60 * 1000,    // 15 min — newsletters publish a few times/day
+  YOUTUBE: 30 * 60 * 1000,       // 30 min — video uploads are infrequent
+  AI_BRIEFING: 60 * 60 * 1000,   // 1 hr
+  AI_INSIGHT: 2 * 60 * 60 * 1000, // 2 hr
 } as const;
 
 export const RSS_FEEDS = [
@@ -86,9 +86,9 @@ export const REDDIT_SUBREDDITS = [
 export const ARXIV_CATEGORIES = ["cs.AI", "cs.LG", "cs.CR", "cs.PL"];
 
 export const SERPER_QUERIES = [
-  "latest AI technology news",
+  "latest AI technology news today",
   "programming language updates",
-  "cybersecurity breach 2025",
+  "cybersecurity breach vulnerability",
   "open source software release",
   "cloud computing news",
   "startup tech funding",

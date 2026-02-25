@@ -18,7 +18,7 @@ export async function fetchDevTo(): Promise<{ articles: Article[]; stats: Source
 
   try {
     const res = await fetch(
-      "https://dev.to/api/articles?per_page=20&top=7",
+      "https://dev.to/api/articles?per_page=20&top=1",
       { next: { revalidate: 0 } }
     );
 

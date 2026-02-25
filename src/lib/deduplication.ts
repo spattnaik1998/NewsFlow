@@ -62,8 +62,8 @@ export function scoreArticle(article: Article): number {
   };
 
   const max = sourceMax[article.source] ?? 1000;
-  // Normalize to 0–60 range
-  const normalized = Math.min(60, (rawScore / max) * 60);
+  // Normalize to 0–40 range (reduced from 60 to give more weight to recency)
+  const normalized = Math.min(40, (rawScore / max) * 40);
 
   // Source quality bonus (0–20)
   const sourceBonus: Record<string, number> = {
@@ -81,9 +81,11 @@ export function scoreArticle(article: Article): number {
   };
   const bonus = sourceBonus[article.source] ?? 5;
 
-  // Recency bonus: up to 20 points, decays over 48h
+  // Recency bonus: up to 40 points, loses 1 point per hour, fully decays at 40h.
+  // Doubled from the old 0–20 / 2.4h-per-point formula so fresh articles surface
+  // clearly above older high-engagement ones.
   const ageHours = (Date.now() - new Date(article.publishedAt).getTime()) / 3_600_000;
-  const recency = Math.max(0, 20 - Math.floor(ageHours / 2.4));
+  const recency = Math.max(0, 40 - Math.floor(ageHours));
 
   return Math.round(normalized + bonus + recency);
 }

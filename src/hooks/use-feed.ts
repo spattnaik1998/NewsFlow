@@ -20,8 +20,8 @@ function buildUrl(filters: FeedFilters): string {
 export function useFeed(filters: FeedFilters = {}) {
   const url = buildUrl(filters);
   const { data, error, isLoading, mutate } = useSWR<FeedResponse>(url, fetcher, {
-    refreshInterval: 5 * 60 * 1000, // re-fetch every 5 min
-    revalidateOnFocus: false,
+    refreshInterval: 2 * 60 * 1000, // re-fetch every 2 min (matches FULL_FEED TTL)
+    revalidateOnFocus: true,        // refresh when user returns to the tab
     dedupingInterval: 30_000,
   });
 
